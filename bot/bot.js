@@ -1,7 +1,7 @@
 import { Context, Telegraf } from "telegraf";
 import { message } from "telegraf/filters";
-import dotenv from 'dotenv'
 import { Markup } from "telegraf";
+import dotenv from 'dotenv'
 
 dotenv.config()
 
@@ -30,12 +30,7 @@ bot.start((context) => {
 });
 
 bot.hears('Hiragana', (context) => {
-    context.reply(
-        'Do you know all or smth kanas?',
-        Markup.keyboard(['ALL', 'SMTH'])
-            .resize()
-            .oneTime()
-    )
+    
 })
 
 // bot.on(message('text'), (context) => {

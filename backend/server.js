@@ -1,12 +1,13 @@
 import express from 'express'
 import { supabase } from './database.js'
+import { getRandomKana } from './handlers.js'
 
 const server = express()
 const PORT = process.env.PORT || 4001
 
 server.use(express.json())
 
-server.get('/test', async (req, res) => {
+server.get('/get_all_hiragana', async (req, res) => {
     const { data, error } = await supabase
         .from('hiragana')
         .select('*')
@@ -15,12 +16,6 @@ server.get('/test', async (req, res) => {
     }
     res.json(data);
 })
-
-
-
-
-
-
 
 server.listen(PORT, () => {
     console.log(`Server is listening on port ${PORT}`)  

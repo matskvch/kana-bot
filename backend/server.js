@@ -1,6 +1,5 @@
 import express from 'express'
 import { supabase } from './database.js'
-import { getRandomKana } from './handlers.js'
 
 const server = express()
 const PORT = process.env.PORT || 4001

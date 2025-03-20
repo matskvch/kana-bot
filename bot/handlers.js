@@ -31,8 +31,8 @@ export async function sendNextQuestion(context) {
         context.session.currentKana = randomKana
 
         await context.replyWithPhoto(
-            { url: randomKana.image_url},
-            {caption: 'How this kana read?'}
+            { url: randomKana.image_url },
+            { caption: 'How this kana read?' }
         )
     } catch (error) {
         console.error('Error:', error)
@@ -65,4 +65,31 @@ export async function startTraining(context, kanaTable) {
     }
 }
 
-export async function checkAnswer()
+export async function checkAnswer(context, userAnswer) {
+    try {
+        if (!context.session || context.session.currentKana) {
+            await context.reply('Please start the training')
+            return
+        }
+
+        const correctAnswer = context.session.currentKana.reading
+        const isCorrect = userAnswer.toLowerCase() === correctAnswer.toLowerCase()
+
+        context.session.totalAnswers += 1
+        if (isCorrect) {
+            context.session.correctAnswers += 1
+        }
+
+        if (isCorrect) {
+            await context.reply('✅ Correct!')
+        } else {
+            await context.reply(`❌ Incorrect. Correct reading is: ${correctAnswer}`)
+        }
+
+        await sendNextQuestion(context)
+        
+    } catch (error) {
+        console.log('Error:', error)
+        await context.reply('Error while checking answer')
+    }
+}

@@ -1,47 +1,39 @@
-import { Context, Telegraf } from "telegraf";
+import { Context, session, Telegraf } from "telegraf";
 import { message } from "telegraf/filters";
 import { Markup } from "telegraf";
 import dotenv from 'dotenv'
+import { startTraining, checkAnswer } from './handlers.js';
 
 dotenv.config()
 
 const bot = new Telegraf(process.env.TELEGRAM_API_KEY)
+bot.use(session())
 
 bot.telegram.setMyCommands([
-    {command: 'test1', description: 'show test'},
-    {command: 'test2', description: 'test 2 descr'}
+    {command: 'Start', description: 'Start training'}
 ])
-
-bot.command('test1', (context) => {
-    context.reply('Hello you pressed test 1')
-})
-
-bot.command('test2', (context) => {
-    context.reply('Hello YOU pressed test 2')
-})
 
 bot.start((context) => {
     context.reply(
         'Hi!',
-        Markup.keyboard(['Hiragana', 'Katakana'])
+        Markup.keyboard(['Hiragana'])
             .resize()
             .oneTime()
     );
 });
 
 bot.hears('Hiragana', (context) => {
-    
+    startTraining(context, 'hiragana')
 })
 
-// bot.on(message('text'), (context) => {
-//     const text = context.message.text
-//     todo.push(String(text)); //add to todo list
+bot.on(message("text"), (context) => {
+    const userAnswer = context.message.text;
+    if (userAnswer.startsWith("/") || ["Hiragana", "Katakana"].includes(userAnswer)) {
+        return;
+    }
 
-//     context.deleteMessage()
-
-//     context.reply(`'${text}' added to todo list.`) //show what has been added
-// })
+    checkAnswer(context, userAnswer);
+});
 
 bot.launch()
-
 console.log('Bot started')

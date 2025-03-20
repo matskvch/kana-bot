@@ -12,7 +12,7 @@ export async function getAllKana(kanaTable) {
     }
 }
 
-export async function getRandomKana(context) {
+export function getRandomKana(context) {
     if (!context.session.unusedKana) {
         //start new cycle of training
         context.session.unusedKana = [...context.session.allKana]

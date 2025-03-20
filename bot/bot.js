@@ -10,7 +10,7 @@ const bot = new Telegraf(process.env.TELEGRAM_API_KEY)
 bot.use(session())
 
 bot.telegram.setMyCommands([
-    {command: 'Start', description: 'Start training'}
+    {command: 'start', description: 'Start training'}
 ])
 
 bot.start((context) => {
